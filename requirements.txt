@@ -108,7 +108,7 @@ torch==2.2.0
 torchaudio==2.5.1
 torchdata==0.7.1
 torchsummary==1.5.1
-torchtext==0.17.0+cpu
+torchtext==0.17.0
 torchvision==0.17.0+cu121
 tornado==6.4.2
 tqdm==4.67.1
