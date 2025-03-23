@@ -1,0 +1,44 @@
+import torch
+from torchtext.vocab import vocab
+from get_answer import get_answer
+from create_vocab import max_len
+from model import SimpleTransformer
+import streamlit as st
+import time
+
+vocab_size = 1560
+model = SimpleTransformer(vocab_size,64,4,128,2,max_len)
+model.load_state_dict(torch.load("simple_transformer.pth"))
+# Streamed response emulator
+def response_generator(prompt):
+    
+    response,_ = get_answer(model,prompt)
+    for word in response.split():
+        yield word + " "
+        time.sleep(0.1)
+
+
+st.title("Simple chat")
+
+# Initialize chat history
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+# Display chat messages from history on app rerun
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
+
+# Accept user input
+if prompt := st.chat_input("What is up?"):
+    # Add user message to chat history
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    # Display user message in chat message container
+    with st.chat_message("user"):
+        st.markdown(prompt)
+
+    # Display assistant response in chat message container
+    with st.chat_message("assistant"):
+        response = st.write_stream(response_generator(prompt))
+    # Add assistant response to chat history
+    st.session_state.messages.append({"role": "assistant", "content": response})
