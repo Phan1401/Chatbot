@@ -121,7 +121,7 @@ threadpoolctl==3.5.0
 tokenizers==0.21.0
 toml==0.10.2
 tomlkit==0.13.2
-torch==2.2.0+cu121
+torch==2.2.0
 torchaudio==2.5.1+cu121
 torchdata==0.7.1
 torchsummary==1.5.1
